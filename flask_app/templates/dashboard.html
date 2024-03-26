@@ -42,7 +42,9 @@
           <td>{{recipe.under_thirty}}</td>
           <td>{{recipe.user_id}}</td>
           <td>
-            <a href="#">View Recipe</a>
+            <form action="/view_recipe/{{recipe.id}}" name="id">
+              <input type="submit" class="btn btn-primary" value="View Recipe">
+            </form>
           </td>
         </tr>
         {% endfor %}

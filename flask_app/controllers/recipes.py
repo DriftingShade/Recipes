@@ -6,3 +6,7 @@ from flask_app.models.recipe import Recipe
 @app.get("/recipes/create")
 def recipe_create():
     return render_template("create_recipe.html")
+
+@app.get("/view_recipe/<int:id>")
+def view_recipe(id):
+    pass

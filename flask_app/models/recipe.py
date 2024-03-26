@@ -29,8 +29,8 @@ class Recipe:
 
     @classmethod
     def create_recipe(cls, data):
-        query = """INSERT INTO heroes (name, instructions, date_made, under_thirty, created_at,
-        updated_at, user_id) VALUES (%(name)s, %(instructions)s, %(date_made)s, %(under_thirty)s, NOW(),
+        query = """INSERT INTO recipes (name, description, instructions, date_made, under_thirty, created_at,
+        updated_at, user_id) VALUES (%(name)s, %(description)s, %(instructions)s, %(date_made)s, %(under_thirty)s, NOW(),
         NOW(), %(user_id)s)"""
         results = connectToMySQL(cls.DB).query_db(query, data)
         print(results)
