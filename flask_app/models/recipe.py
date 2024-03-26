@@ -10,6 +10,7 @@ class Recipe:
 
         self.id = data["id"]
         self.name = data["name"]
+        self.description = data["description"]
         self.instructions = data["instructions"]
         self.date_made = data["date_made"]
         self.under_thirty = data["under_thirty"]
