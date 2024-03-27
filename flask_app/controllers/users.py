@@ -1,7 +1,6 @@
 from flask_app import app, bcrypt
-from flask import flash, render_template, redirect, request, session
 from flask_app.models.user import User
-from flask_app.models.recipe import Recipe
+from flask import flash, render_template, redirect, request, session
 
 
 @app.route("/")
@@ -27,19 +26,9 @@ def register():
         "email": request.form["email"],
         "password": hashed_pw,
     }
-    user_id = User.create(user_data)
+    user_id = User.register(user_data)
     session["user_id"] = user_id
-    return redirect("/users/dashboard")
-
-
-@app.get("/users/dashboard")
-def dashboard():
-    if "user_id" not in session:
-        flash("You must be logged in to view that page.", "login")
-        return redirect("/")
-    user = User.find_by_id({session["user_id"]})
-    all_recipes = Recipe.get_all_recipes()
-    return render_template("dashboard.html", user=user, all_recipes=all_recipes)
+    return redirect("/recipes/all")
 
 
 @app.post("/users/login")
@@ -58,7 +47,7 @@ def login():
         return redirect("/")
 
     session["user_id"] = user.id
-    return redirect("/users/dashboard")
+    return redirect("/recipes/all")
 
 
 @app.route("/users/logout")
