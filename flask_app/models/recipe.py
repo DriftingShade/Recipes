@@ -16,7 +16,7 @@ class Recipe:
         self.under_thirty = data["under_thirty"]
         self.created_at = data["created_at"]
         self.updated_at = data["updated_at"]
-        self.user_id = data["user_id"]
+        self.user = None
 
     @classmethod
     def get_all_recipes(cls):
