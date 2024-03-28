@@ -17,6 +17,7 @@ class User:
         self.password = data["password"]
         self.created_at = data["created_at"]
         self.updated_at = data["updated_at"]
+        self.recipes = []
 
     @staticmethod
     def validate_register(user):
@@ -78,7 +79,7 @@ class User:
         return is_valid
 
     @classmethod
-    def create(cls, data):
+    def register(cls, data):
         query = """INSERT INTO users (first_name, last_name, email, password, 
         created_at, updated_at) VALUES ( %(first_name)s, %(last_name)s, %(email)s, 
         %(password)s, NOW(), NOW());"""
@@ -105,4 +106,33 @@ class User:
         if len(results) == 0:
             return None
         user = User(results[0])
+        return user
+
+    @classmethod
+    def find_by_id_with_recipes(cls, user_id):
+        query = """SELECT * FROM users LEFT JOIN recipes ON users.id = 
+        recipes.user_id WHERE users.id = %(user_id)s"""
+        data = {"user_id": user_id}
+        list_of_dicts = connectToMySQL(User.DB).query_db(query, data)
+
+        if len(list_of_dicts) == 0:
+            return None
+        
+        user = User(list_of_dicts[0])
+        for each_dict in list_of_dicts:
+            if each_dict["recipes.id"] != None:
+                recipe_data = {
+                    "id": each_dict["recipes.id"],
+                    "column1": each_dict["column1"],
+                    "column2": each_dict["column2"],
+                    "column3": each_dict["column3"],
+                    "column4": each_dict["column4"],
+                    "column5": each_dict["colum51"],
+                    "created_at": each_dict["recipes.created_at"],
+                    "updated_at": each_dict["recipes.updated_at"],
+                    "user_id": each_dict["user_id"],
+                }
+                recipe = recipe.Recipe(recipe_data)
+                user.recipes.append(recipe)
+
         return user
