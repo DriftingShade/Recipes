@@ -9,11 +9,11 @@ class Recipe:
 
     def __init__(self, data):
         self.id = data["id"]
-        self.column1 = data["column1"]
-        self.column2 = data["column2"]
-        self.column3 = data["column3"]
-        self.column4 = data["column4"]
-        self.column5 = data["column5"]
+        self.name = data["name"]
+        self.description = data["description"]
+        self.instructions = data["instructions"]
+        self.date_made = data["date_made"]
+        self.under_thirty = data["under_thirty"]
         self.create_at = data["created_at"]
         self.updated_at = data["updated_at"]
         self.user_id = data["user_id"]
@@ -24,30 +24,33 @@ class Recipe:
         is_valid = True
 
         # Text Validator
-        if len(form_data["column"]) == 0:
-            flash("Please enter column.")
+        if len(form_data["name"]) == 0:
+            flash("Please enter name.")
             is_valid = False
-        elif len(form_data["column"]) < 3:
-            flash("Column must be at least three characters.")
+        elif len(form_data["description"]) < 3:
+            flash("Description must be at least three characters.")
+            is_valid = False
+        elif len(form_data["instructions"]) < 3:
+            flash("Instructions must be at least three characters.")
             is_valid = False
 
         # Data Validator
-        if len(form_data["date_column"]) == 0:
-            flash("Please enter date_column.")
+        if len(form_data["date_made"]) == 0:
+            flash("Please enter date made.")
             is_valid = False
         else:
             try:
-                datetime.strptime(form_data["date_column"], "%Y-%m-%d")
+                datetime.strptime(form_data["date_made"], "%Y-%m-%d")
             except:
-                flash("Invalid date_column.")
+                flash("Invalid date made.")
                 is_valid = False
 
         # Radio Button Validator
-        if "radio_column" not in form_data:
-            flash("Please enter radio_column.")
+        if "under_thirty" not in form_data:
+            flash("Please choose Yes or No for under 30 minutes.")
             is_valid = False
-        elif form_data["radio_column"] not in ["choice1", "choice2"]:
-            flash("radio_column must be at least three characters.")
+        elif form_data["under_thirty"] not in ["0", "1"]:
+            flash("Please choose Yes or No for under 30 minutes.")
             is_valid = False
 
         return is_valid
@@ -73,13 +76,13 @@ class Recipe:
         for each_dict in list_of_dicts:
             recipe = Recipe(each_dict)
             user_data = {
-                "id": each_dict["recipes.id"],
+                "id": each_dict["id"],
                 "first_name": each_dict["first_name"],
                 "last_name": each_dict["last_name"],
                 "email": each_dict["email"],
                 "password": each_dict["password"],
-                "created_at": each_dict["recipes.created_at"],
-                "updated_at": each_dict["recipes.updated_at"],
+                "created_at": each_dict["created_at"],
+                "updated_at": each_dict["updated_at"],
             }
             user = User(user_data)
             recipe.user = user
@@ -125,10 +128,10 @@ class Recipe:
     @classmethod
     def create(cls, form_data):
         query = """INSERT INTO recipes
-        (column1, column2, column3, column4, column5, user_id)
+        (name, description, instructions, date_made, under_thirty, user_id)
         VALUES
-        (%(column1)s, %(column2)s, %(column3)s, %(column4)s, %(column5)s, 
-        %(user_id)s,)"""
+        (%(name)s, %(description)s, %(instructions)s, %(date_made)s, %(under_thirty)s, 
+        %(user_id)s)"""
         recipe_id = connectToMySQL(Recipe.DB).query_db(query, form_data)
         return recipe_id
 
@@ -136,11 +139,11 @@ class Recipe:
     def update(cls, form_data):
         query = """UPDATE recipes
         SET
-        column1=%(column1)s,
-        column2=%(column2)s,
-        column3=%(column3)s,
-        column4=%(column4)s,
-        column5=%(column5)s,
+        name=%(name)s,
+        description=%(description)s,
+        instructions=%(instructions)s,
+        date_made=%(date_made)s,
+        under_thirty=%(under_thirty)s,
         WHERE id = %(recipe_id)s;"""
         connectToMySQL(Recipe.DB).query_db(query, form_data)
         return
