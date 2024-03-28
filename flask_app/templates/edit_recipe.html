@@ -16,7 +16,7 @@
       <div class="container-fluid">
         <h2>Welcome, {{user.first_name}}</h2>
         <form class="d-flex" role="logout" action="/users/logout">
-          <a href="/users/dashboard" class="btn btn-primary mx-3"
+          <a href="/recipes/all" class="btn btn-primary mx-3"
             >Back To Recipes</a
           >
           <button class="btn btn-outline-danger" type="submit">Log Out</button>
@@ -42,11 +42,11 @@
               <label for="floatingTextarea">Name</label>
             </div>
             <div class="form-floating">
-              <textarea class="form-control mt-3" placeholder="Description Here" id="floatingTextarea" name="description" value="{{recipe.description}}"></textarea>
-              <label for="floatingTextarea">Desription</label>
+              <textarea class="form-control mt-3" placeholder="Description Here" id="floatingTextarea" name="description" value="{{recipe.description}}">{{recipe.description}}</textarea>
+              <label for="floatingTextarea">Description</label>
             </div>
             <div class="form-floating">
-              <textarea class="form-control mt-3" placeholder="instructions Here" id="floatingTextarea" name="instructions" value="{{recipe.instructions}}"></textarea>
+              <textarea class="form-control mt-3" placeholder="instructions Here" id="floatingTextarea" name="instructions" value="{{recipe.instructions}}">{{recipe.instructions}}</textarea>
               <label for="floatingTextarea">Instructions</label>
             </div>
             <label for="date_made">Date Made:</label>
@@ -65,6 +65,7 @@
                   No
                 </label>
                 <input type="hidden" name="user_id" value="{{user.id}}">
+                <input type="hidden" name="recipe_id" value="{{recipe.id}}">
               </div>
             </div>
             <input type="submit" class="btn btn-primary mt-3" value="Edit Recipe!">

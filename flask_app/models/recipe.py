@@ -143,7 +143,7 @@ class Recipe:
         description=%(description)s,
         instructions=%(instructions)s,
         date_made=%(date_made)s,
-        under_thirty=%(under_thirty)s,
+        under_thirty=%(under_thirty)s
         WHERE id = %(recipe_id)s;"""
         connectToMySQL(Recipe.DB).query_db(query, form_data)
         return

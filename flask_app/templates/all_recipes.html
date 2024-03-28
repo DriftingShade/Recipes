@@ -36,10 +36,17 @@
           <td>{{ recipe.name }}</td>
           <td>{{ 'Yes' if recipe.under_thirty else 'No' }}</td>
           <td>{{ recipe.user.first_name }}</td>
-          <td>
-            <a href="/recipes/{{ recipe.id }}" class="btn btn-primary"
+          <td class="d-flex">
+            <a href="/recipes/{{ recipe.id }}" class="btn btn-primary mx-3"
               >View Recipe</a
             >
+            {% if user.id == recipe.user_id %}
+              
+            <a href="/recipes/{{recipe.id}}/edit" class="btn btn-warning mx-3">Edit Recipe</a>
+            <form action="/recipes/{{recipe.id}}/delete" method="post">
+              <input type="submit" class="btn btn-danger mx-3" value="Delete Recipe">
+            </form>
+            {% endif %}
           </td>
         </tr>
         {% endfor %}
